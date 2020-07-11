@@ -74,6 +74,9 @@ class ClassActivationMaps:
         return self.activations
 
 def visualize_activations(image_samples):
+    '''
+    Visualizes the activation for a list of image samples
+    '''
     for image_sample in image_samples:
         output = model(image_sample.reshape(1,3,224,224))
         activations = cam.activations.copy()
@@ -100,12 +103,42 @@ def visualize_activations(image_samples):
             except Exception as e:
                 print(e)
                 continue
-                
+
+def visualize_weights(model):
+    '''
+    visualizes the weights in the network
+    '''
+    for layer in list(model.main): # change to model.main to layer name / sequential block name
+        try:
+            weights = layer.weight
+            if len(weights.shape) < 3: continue
+            print(layer)
+            weights = torch.sum(weights, axis = 1).detach().numpy() # sum for channels
+            c, w, h = weights.shape
+            grid_size = int(np.sqrt(c)), int(np.ceil(np.sqrt(c)))
+            fig, ax = plt.subplots(nrows = grid_size[0], ncols = grid_size[1], figsize=(15,15))
+            idx = 0
+            for row in range(grid_size[0]):
+                for col in range(grid_size[1]):
+                    try:
+                        ax[row][col].imshow(weights[idx, :, :], cmap = 'jet')
+                        ax[row][col].axis('off')
+                        idx += 1
+                    except Exception as e:
+                        ax[row][col].axis('off')
+                        continue
+            plt.show()
+        except Exception as e:
+            continue
+            
 if __name__ == '__main__':
     # Load the model/ use state dict or torch.load here:
     model = Model_v1()
     cam = ClassActivationMaps(model)
     layers_to_visualize = ['conv1', 'conv2', 'conv3', 'conv4', 'conv5']
+    
+    # visualize weights
+    visualize_weights(model)
     
     # image_samples loaded and transformed as torch.Tensors
     visualize_activations(image_samples)
