@@ -6,6 +6,7 @@ Date: Jul 10, 2020
 import torch
 import torch.nn
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
 
 from conv_models import Model_v1
 
