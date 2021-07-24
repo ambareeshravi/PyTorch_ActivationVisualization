@@ -1,2 +1,3 @@
 # PyTorch_ActivationVisualization
-Visualize conv activations in PyTorch
+
+Module to visualize activations from convolutional layers in PyTorch models
