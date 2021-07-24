@@ -8,7 +8,7 @@ import torch.nn
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
-from conv_models import Model_v1
+# from conv_models import Model_v1
 
 class ClassActivationMaps:
     def __init__(self, model, layer_names, layers_to_hook):
@@ -165,15 +165,3 @@ def visualize_weights(model):
             plt.show()
         except Exception as e:
             continue
-            
-if __name__ == '__main__':
-    # Load the model/ use state dict or torch.load here:
-    model = Model_v1()
-    cam = ClassActivationMaps(model)
-    layers_to_visualize = ['conv1', 'conv2', 'conv3', 'conv4', 'conv5']
-    
-    # visualize weights
-    visualize_weights(model)
-    
-    # image_samples loaded and transformed as torch.Tensors
-    visualize_activations(image_samples)
